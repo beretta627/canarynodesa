@@ -1,26 +1,39 @@
+<!doctype html>
 <html>
   <head>
-    <title>Welcome to Acquia Cloud</title>
+    <title>Socket.IO chat</title>
+    <style>
+      * { margin: 0; padding: 0; box-sizing: border-box; }
+      body { font: 13px Helvetica, Arial; }
+      form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+      form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+      form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages li { padding: 5px 10px; }
+      #messages li:nth-child(odd) { background: #eee; }
+      #messages { margin-bottom: 40px }
+    </style>
   </head>
-  <body bgcolor=white text=#333333 style="padding:5px 15px 5px 15px; font-family: myriad-pro-1,myriad-pro-2,corbel,sans-serif;">
-  <a href="https://www.acquia.com"><img src="acquialogo.gif" border=0></a>
-
-    <h3>Welcome to Acquia Cloud</h3>
-
-    <p>This is the default content page for an
-    <a href="https://www.acquia.com/products-services/acquia-cloud">Acquia Cloud</a>
-    web site.</p>
-
-    <p>If you are an Acquia customer, you can manage your Acquia-hosted site via
-    Acquia Cloud. Use its management console to import your existing Drupal
-    content or to install a Drupal distribution.</p>
-
-    <p style="margin-bottom: 1px;">To visit the Acquia Cloud management console:</p>
-      <ol style="margin-top: 1px;">
-        <li>Log in to your <a href="https://accounts.acquia.com/user">Acquia account</a></li>
-        <li>Click on <a href="https://cloud.acquia.com/cloud#/develop">Develop</a></li>
-        <li>Click on the <strong>Application</strong> you wish to manage
-      </ol>
-    </p>
+  <body>
+    <ul id="messages"></ul>
+    <form action="">
+      <input id="m" autocomplete="off" /><button>Send</button>
+    </form>
+    <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+      $(function () {
+        var socket = io();
+        $('form').submit(function(){
+          socket.emit('chat message', $('#m').val());
+          $('#m').val('');
+          return false;
+        });
+        socket.on('chat message', function(msg){
+          $('#messages').append($('<li>').text(msg));
+          window.scrollTo(0, document.body.scrollHeight);
+        });
+      });
+    </script>
   </body>
 </html>
