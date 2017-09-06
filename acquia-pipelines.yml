@@ -1,6 +1,7 @@
 version: 1.0.0
 variables:
   global:
+    PIPELINE_CLOUD_SITE: pipelinesdonotdelete
     HOSTING_API_STAGE: canary
 
 events:
@@ -10,13 +11,10 @@ events:
           script:
             - nvm install v6.11.2
             - nvm use 6.11.2
+            - npm install -g ionic
             - npm install --production
+            - ionic build
       - upload-artifact:
           script:
             - pipelines-artifact start
             - pipelines-artifact upload $SOURCE_DIR
-  fail-on-build:
-    steps:
-      - fail:
-          script:
-            - pipelines-artifact fail
