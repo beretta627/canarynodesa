@@ -68,7 +68,7 @@ const server = http.createServer(app);
 
 const wss = new WebSocket.Server({ server });
 
-server.listen(argv['port'] || 8080);
+server.listen(argv['port'] || 80);
 
 let requests = {};
 let responses = {};
