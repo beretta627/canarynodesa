@@ -13,7 +13,7 @@ events:
             - nvm install v6.11.2
             - nvm use 6.11.2
             - npm install -g ionic
-            - npm install --production
+            - npm install
             - ionic build
       - upload-artifact:
           script:
