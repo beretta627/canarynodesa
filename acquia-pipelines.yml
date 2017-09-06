@@ -5,4 +5,4 @@ events:
       - hello:
           type: script
           script:
-            - echo "Hello, Pipelines!" > docroot/index.html
+            - node docroot/index.js
