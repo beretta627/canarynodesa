@@ -35,5 +35,8 @@
     "ionic": "3.8.1",
     "typescript": "2.3.4"
   },
-  "description": "An Ionic 2 project for the Obio scenario."
+  "description": "An Ionic 2 project for the Obio scenario.",
+  "scripts": {
+    "start": "node index.js"
+  }
 }
