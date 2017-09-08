@@ -36,8 +36,8 @@ app.get('/api/site_info', function (req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.send(json);
     })
-    .catch(function () {
-      res.status(500).send('Error when fetching site information.');
+    .catch(function (error) {
+      res.status(500).send('Error when fetching site information: ' + error);
     });
   }
 });
@@ -57,8 +57,8 @@ app.post('/contact_message', function (req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.send(json);
     })
-    .catch(function () {
-      res.status(500).send('Error when sending contact submission.');
+    .catch(function (error) {
+      res.status(500).send('Error when sending contact submission: ' + error);
     });
   }
 });
