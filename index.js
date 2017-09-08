@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.get('/debug', function (req, res) {
-  res.status('200').send('Hello, world!');
+  res.status('200').send('Cookies in request: ' + req.get('Cookie'));
 });
 
 // This is a funny route we made to customize the look/feel of the app, it
