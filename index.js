@@ -6,6 +6,8 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const https = require('https');
+
 // This looks a little crazy, as in Presales we need to support multiple users
 // all using this one headless application on their sites. As a result, the URL
 // for Drupal is configurable by the end user and set in a cookie.
@@ -24,6 +26,36 @@ app.use(bodyParser.json());
 
 app.get('/debug', function (req, res) {
   res.status('200').send('Cookies : ' + req.get('Cookie'));
+});
+
+app.get('/http-test', function (req, res) {
+  http.get({
+    host: 'google.com'
+  }, function(response) {
+    // Continuously update stream with data
+    var body = '';
+    response.on('data', function(d) {
+      body += d;
+    });
+    response.on('end', function() {
+      res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
+    });
+  });
+});
+
+app.get('/https-test', function (req, res) {
+  https.get({
+    host: 'google.com'
+  }, function(response) {
+    // Continuously update stream with data
+    var body = '';
+    response.on('data', function(d) {
+      body += d;
+    });
+    response.on('end', function() {
+      res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
+    });
+  });
 });
 
 // This is a funny route we made to customize the look/feel of the app, it
