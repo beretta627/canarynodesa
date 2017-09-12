@@ -40,6 +40,8 @@ app.get('/http-test', function (req, res) {
     response.on('end', function() {
       res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
     });
+  }).on('error', function(e) {
+    res.status(500).send('Error when contacting http://google.com: ' + e.message);
   });
 });
 
@@ -55,6 +57,8 @@ app.get('/https-test', function (req, res) {
     response.on('end', function() {
       res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
     });
+  }).on('error', function(e) {
+    res.status(500).send('Error when contacting https://google.com: ' + e.message);
   });
 });
 
