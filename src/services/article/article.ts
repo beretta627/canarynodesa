@@ -18,7 +18,7 @@ export class ArticleService {
     if (this.ws) {
       this.ws.close();
     }
-    this.ws = new WebSocket('ws://' + location.host);
+    this.ws = new WebSocket('ws://' + location.host + '/_socket');
     let self = this;
     this.ws.onmessage = function (event) {
       console.log('Websocket message received.');

@@ -106,9 +106,12 @@ const server = http.createServer(app);
 
 // Use web sockets for fetching articles, to throttle and obscure Drupal hits.
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({
+  'path': '/_socket',
+  server
+});
 
-server.listen(argv['port'] || process.env.PORT || 80);
+server.listen(argv['port'] || process.env.PORT || 8080);
 
 let requests = {};
 let responses = {};
