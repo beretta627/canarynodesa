@@ -24,44 +24,6 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/debug', function (req, res) {
-  res.status('200').send('Cookies : ' + req.get('Cookie'));
-});
-
-app.get('/http-test', function (req, res) {
-  http.get({
-    host: 'google.com'
-  }, function(response) {
-    // Continuously update stream with data
-    var body = '';
-    response.on('data', function(d) {
-      body += d;
-    });
-    response.on('end', function() {
-      res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
-    });
-  }).on('error', function(e) {
-    res.status(500).send('Error when contacting http://google.com: ' + e.message);
-  });
-});
-
-app.get('/https-test', function (req, res) {
-  https.get({
-    host: 'google.com'
-  }, function(response) {
-    // Continuously update stream with data
-    var body = '';
-    response.on('data', function(d) {
-      body += d;
-    });
-    response.on('end', function() {
-      res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
-    });
-  }).on('error', function(e) {
-    res.status(500).send('Error when contacting https://google.com: ' + e.message);
-  });
-});
-
 // This is a funny route we made to customize the look/feel of the app, it
 // returns Drupal theme colors and the site config as JSON.
 app.get('/api/site_info', function (req, res) {
