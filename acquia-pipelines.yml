@@ -11,7 +11,6 @@ events:
             - nvm install v6.11.2
             - nvm use 6.11.2
             - npm install
-            - npm start
       - upload-artifact:
           script:
             - pipelines-artifact start
