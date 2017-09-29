@@ -181,6 +181,7 @@ wss.on('connection', function connection(ws, req) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     ws.on('close', function connection() {
       log('Websocket closed for ' + ip + '. ' + wss.clients.size + ' total clients.');
+      log('process.env.baseUrl: ' + process.env.baseUrl);
     });
     log('New websocket connection from ' + ip + '. ' + wss.clients.size + ' total clients.');
   }
