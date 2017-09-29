@@ -184,6 +184,7 @@ wss.on('connection', function connection(ws, req) {
       log('process.env.baseUrl: ' + process.env.baseUrl);
     });
     log('New websocket connection from ' + ip + '. ' + wss.clients.size + ' total clients.');
+    log('process.env.baseUrl: ' + process.env.baseUrl);
   }
   else {
     ws.terminate();
