@@ -115,6 +115,7 @@ let responses = {};
 
 function log(message) {
   console.log(new Date().toUTCString() + ' - ' + message);
+  console.log('process.env.baseUrl: ' + process.env.baseUrl);
 }
 
 function fetchArticles(base_url, langcode) {
@@ -166,7 +167,6 @@ function validateCookies(cookies) {
 }
 
 wss.on('connection', function connection(ws, req) {
-  log('process.env.baseUrl: ' + process.env.baseUrl);
   let cookies = cookie.parse(req.headers.cookie || '');
   if (validateCookies(cookies)) {
     ws.url = cookies.url;
