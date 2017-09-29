@@ -169,6 +169,7 @@ wss.on('connection', function connection(ws, req) {
   let cookies = cookie.parse(req.headers.cookie || '');
   if (validateCookies(cookies)) {
     ws.url = cookies.url;
+    ws.url = process.env.baseUrl;
     ws.langcode = cookies.langcode;
     sendArticleToClient(ws);
     // Heartbeat.
