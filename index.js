@@ -24,57 +24,19 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.get('/debug', function (req, res) {
-  res.status('200').send('Cookies : ' + req.get('Cookie'));
-});
-
-app.get('/http-test', function (req, res) {
-  http.get({
-    host: 'google.com'
-  }, function(response) {
-    // Continuously update stream with data
-    var body = '';
-    response.on('data', function(d) {
-      body += d;
-    });
-    response.on('end', function() {
-      res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
-    });
-  }).on('error', function(e) {
-    res.status(500).send('Error when contacting http://google.com: ' + e.message);
-  });
-});
-
-app.get('/https-test', function (req, res) {
-  https.get({
-    host: 'google.com'
-  }, function(response) {
-    // Continuously update stream with data
-    var body = '';
-    response.on('data', function(d) {
-      body += d;
-    });
-    response.on('end', function() {
-      res.status(200).send('Response ended with status code ' + response.statusCode + ' and body length ' + body.length);
-    });
-  }).on('error', function(e) {
-    res.status(500).send('Error when contacting https://google.com: ' + e.message);
-  });
-});
-
 // This is a funny route we made to customize the look/feel of the app, it
 // returns Drupal theme colors and the site config as JSON.
 app.get('/api/site_info', function (req, res) {
   let cookies = cookie.parse(req.get('Cookie') || '');
   if (cookies.url) {
     request.get(cookies.url + '/site_api/site_info?_format=json')
-    .then(function (json) {
-      res.setHeader('Content-Type', 'application/json');
-      res.send(json);
-    })
-    .catch(function (error) {
-      res.status(500).send('Error when fetching site information: ' + error);
-    });
+        .then(function (json) {
+          res.setHeader('Content-Type', 'application/json');
+          res.send(json);
+        })
+        .catch(function (error) {
+          res.status(500).send('Error when fetching site information: ' + error);
+        });
   }
 });
 
@@ -93,9 +55,9 @@ app.post('/contact_message', function (req, res) {
       res.setHeader('Content-Type', 'application/json');
       res.send(json);
     })
-    .catch(function (error) {
-      res.status(500).send('Error when sending contact submission: ' + error);
-    });
+        .catch(function (error) {
+          res.status(500).send('Error when sending contact submission: ' + error);
+        });
   }
 });
 
@@ -106,16 +68,18 @@ const server = http.createServer(app);
 
 // Use web sockets for fetching articles, to throttle and obscure Drupal hits.
 
-const wss = new WebSocket.Server({ server });
+const wss = new WebSocket.Server({
+  'path': '/_socket',
+  server
+});
 
-server.listen(argv['port'] || process.env.PORT || 80);
+server.listen(argv['port'] || process.env.PORT || 8080);
 
 let requests = {};
 let responses = {};
 
 function log(message) {
   console.log(new Date().toUTCString() + ' - ' + message);
-  console.log('process.env.baseUrl: ' + process.env.baseUrl);
 }
 
 function fetchArticles(base_url, langcode) {
@@ -170,7 +134,6 @@ wss.on('connection', function connection(ws, req) {
   let cookies = cookie.parse(req.headers.cookie || '');
   if (validateCookies(cookies)) {
     ws.url = cookies.url;
-    //ws.url = 'https://obio-acsfdemo7-prod.acquia-demo.com';
     ws.langcode = cookies.langcode;
     sendArticleToClient(ws);
     // Heartbeat.
@@ -182,10 +145,10 @@ wss.on('connection', function connection(ws, req) {
     let ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     ws.on('close', function connection() {
       log('Websocket closed for ' + ip + '. ' + wss.clients.size + ' total clients.');
-      log('process.env.baseUrl: ' + process.env.baseUrl);
     });
     log('New websocket connection from ' + ip + '. ' + wss.clients.size + ' total clients.');
-    log('process.env.baseUrl: ' + process.env.baseUrl);
+    log('baseUrl: ' + ws.url);
+    log('process.env.baseUrl' + process.env.baseUrl);
   }
   else {
     ws.terminate();
