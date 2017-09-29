@@ -169,7 +169,7 @@ wss.on('connection', function connection(ws, req) {
   let cookies = cookie.parse(req.headers.cookie || '');
   if (validateCookies(cookies)) {
     //ws.url = cookies.url;
-    ws.url = 'http://canarynodesadev.gardens.acquia-sites.com';
+    ws.url = 'https://obio-acsfdemo7-prod.acquia-demo.com';
     ws.langcode = cookies.langcode;
     sendArticleToClient(ws);
     // Heartbeat.
