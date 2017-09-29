@@ -14,6 +14,7 @@ events:
             - nvm install v6.11.2
             - nvm use 6.11.2
             - npm install -g ionic
+            - npm install -g node-inspector
             - npm install
             - ionic build
       - upload-artifact:
