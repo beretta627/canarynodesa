@@ -166,10 +166,11 @@ function validateCookies(cookies) {
 }
 
 wss.on('connection', function connection(ws, req) {
+  log('process.env.baseUrl: ' + process.env.baseUrl);
   let cookies = cookie.parse(req.headers.cookie || '');
   if (validateCookies(cookies)) {
-    //ws.url = cookies.url;
-    ws.url = 'https://obio-acsfdemo7-prod.acquia-demo.com';
+    ws.url = cookies.url;
+    //ws.url = 'https://obio-acsfdemo7-prod.acquia-demo.com';
     ws.langcode = cookies.langcode;
     sendArticleToClient(ws);
     // Heartbeat.
